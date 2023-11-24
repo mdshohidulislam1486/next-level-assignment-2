@@ -1,5 +1,5 @@
 import { CustomError, UserModel } from '../user.model';
-import { Tuser } from './user.interface';
+import { Torders, Tuser } from './user.interface';
 
 const createUserIntoDb = async (userData: Tuser) => {
   const result = await UserModel.create(userData);
@@ -39,9 +39,7 @@ const updateSingleUserIntoDB = async (userId: string, userData: Tuser) => {
     userData,
     { new: true },
   ).select('-password -_id');
-  if (!updatedUser) {
-    throw new CustomError('Failed to update user', 500);
-  }
+
   return updatedUser;
 };
 const deleteSingleUserFromDB = async (userId: string) => {
@@ -52,10 +50,29 @@ const deleteSingleUserFromDB = async (userId: string) => {
   const result = await UserModel.deleteOne({ userId });
   return result;
 };
+const addSingleOrderIntoDB = async (userId: string, order: Torders) => {
+  console.log({ order });
+  const userExists = await UserModel.isUserExists(userId);
+  if (!userExists) {
+    throw new CustomError('No user found', 404);
+  }
+  const updateOrder = await UserModel.findOneAndUpdate(
+    { userId: Number(userId) },
+    {
+      $push: {
+        orders: order,
+      },
+    },
+    { new: true },
+  ).select('-password');
+
+  return updateOrder;
+};
 export const userService = {
   createUserIntoDb,
   getAllUserFromDB,
   getSingleUserFromDB,
   updateSingleUserIntoDB,
   deleteSingleUserFromDB,
+  addSingleOrderIntoDB,
 };

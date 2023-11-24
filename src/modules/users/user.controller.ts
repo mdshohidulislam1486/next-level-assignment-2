@@ -103,10 +103,35 @@ const deleteSingleUser = async (req: Request, res: Response) => {
   }
 };
 
+const addSingleOrder = async (req: Request, res: Response) => {
+  try {
+    const { userId } = req.params;
+
+    const { order } = req.body;
+    await userService.addSingleOrderIntoDB(userId, order);
+    console.log({ userId, order });
+    res.status(200).json({
+      success: true,
+      message: 'Order created successfully!',
+      data: null,
+    });
+  } catch (error: any) {
+    res.status(500).json({
+      success: false,
+      message: error.message || 'Could not add the order',
+      error: {
+        code: 404,
+        description: 'Could not add the order',
+      },
+    });
+  }
+};
+
 export const userControllers = {
   createUser,
   getAllUser,
   getSingleUser,
   updateSingleUser,
   deleteSingleUser,
+  addSingleOrder,
 };

@@ -8,6 +8,7 @@ router
   .get('/users', userControllers.getAllUser)
   .get('/users/:userId', userControllers.getSingleUser)
   .put('/users/:userId', userControllers.updateSingleUser)
-  .delete('/users/:userId', userControllers.deleteSingleUser);
+  .delete('/users/:userId', userControllers.deleteSingleUser)
+  .put('/users/:userId/orders', userControllers.addSingleOrder);
 
 export const userRoutes = router;
