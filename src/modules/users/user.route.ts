@@ -10,6 +10,10 @@ router
   .put('/users/:userId', userControllers.updateSingleUser)
   .delete('/users/:userId', userControllers.deleteSingleUser)
   .put('/users/:userId/orders', userControllers.addSingleOrder)
-  .get('/users/:userId/orders', userControllers.getAllOrdersForSingleUserId);
+  .get('/users/:userId/orders', userControllers.getAllOrdersForSingleUserId)
+  .get(
+    '/users/:userId/orders/total-price',
+    userControllers.getTotalPriceForUserOrders,
+  );
 
 export const userRoutes = router;

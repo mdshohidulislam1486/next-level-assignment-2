@@ -146,6 +146,27 @@ const getAllOrdersForSingleUserId = async (req: Request, res: Response) => {
     });
   }
 };
+const getTotalPriceForUserOrders = async (req: Request, res: Response) => {
+  try {
+    const { userId } = req.params;
+
+    const result = await userService.getTotalPriceForUserOrdersFromDB(userId);
+    res.status(200).json({
+      success: true,
+      message: 'Total price calculated successfully!',
+      data: result,
+    });
+  } catch (error: any) {
+    res.status(500).json({
+      success: false,
+      message: error.message || 'Could not found total price',
+      error: {
+        code: 404,
+        description: 'Could not found total price',
+      },
+    });
+  }
+};
 
 export const userControllers = {
   createUser,
@@ -155,4 +176,5 @@ export const userControllers = {
   deleteSingleUser,
   addSingleOrder,
   getAllOrdersForSingleUserId,
+  getTotalPriceForUserOrders,
 };
