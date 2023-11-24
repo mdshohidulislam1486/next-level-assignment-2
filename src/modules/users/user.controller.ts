@@ -109,7 +109,6 @@ const addSingleOrder = async (req: Request, res: Response) => {
 
     const { order } = req.body;
     await userService.addSingleOrderIntoDB(userId, order);
-    console.log({ userId, order });
     res.status(200).json({
       success: true,
       message: 'Order created successfully!',
@@ -126,6 +125,27 @@ const addSingleOrder = async (req: Request, res: Response) => {
     });
   }
 };
+const getAllOrdersForSingleUserId = async (req: Request, res: Response) => {
+  try {
+    const { userId } = req.params;
+
+    const result = await userService.getAllOrderForUserFromDB(userId);
+    res.status(200).json({
+      success: true,
+      message: 'Order fetched successfully!',
+      data: result,
+    });
+  } catch (error: any) {
+    res.status(500).json({
+      success: false,
+      message: error.message || 'Could not fetch orders',
+      error: {
+        code: 404,
+        description: 'Could not fetch orders',
+      },
+    });
+  }
+};
 
 export const userControllers = {
   createUser,
@@ -134,4 +154,5 @@ export const userControllers = {
   updateSingleUser,
   deleteSingleUser,
   addSingleOrder,
+  getAllOrdersForSingleUserId,
 };
