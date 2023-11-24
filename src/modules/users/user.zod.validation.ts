@@ -15,7 +15,7 @@ const Torders = z.object({
 const userValidation = z.object({
   userId: z.number(),
   username: z.string(),
-  password: z.string(),
+  password: z.string().optional(),
   fullName: z.object({
     firstName: z.string(),
     lastName: z.string(),
@@ -25,7 +25,7 @@ const userValidation = z.object({
   isActive: z.boolean(),
   hobbies: z.array(z.string()),
   address: Taddress,
-  orders: z.array(Torders),
+  orders: z.array(Torders).optional(),
 });
 
 export default userValidation;

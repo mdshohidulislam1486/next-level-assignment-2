@@ -1,21 +1,25 @@
 import mongoose, { Schema, model } from 'mongoose';
 import validator from 'validator';
-import { Taddress, Torders, Tuser } from './users/user.interface';
-import { boolean } from 'zod';
+import { Taddress, Torders, Tuser, userModel } from './users/user.interface';
+import bcrypt from 'bcrypt';
+import config from '../app/config';
 
-const addressSchema = new Schema<Taddress>({
-  street: String,
-  city: String,
-  country: String,
-});
+const addressSchema = new Schema<Taddress>(
+  {
+    street: String,
+    city: String,
+    country: String,
+  },
+  { _id: false },
+);
 
-const ordersSchema = new Schema<Torders>({
+const ordersSchema = new Schema<Torders, userModel>({
   productName: String,
   price: Number,
   quantity: Number,
 });
 
-const userScheam = new Schema<Tuser>({
+const userSchema = new Schema<Tuser>({
   userId: {
     type: Number,
     required: true,
@@ -24,12 +28,12 @@ const userScheam = new Schema<Tuser>({
   username: {
     type: String,
     required: [true, 'Must add an user name'],
-    uniqe: true,
+    unique: true,
   },
   password: String,
   fullName: {
-    type: Object,
-    required: true,
+    firstName: { type: String, required: true },
+    lastName: { type: String, required: true },
   },
   age: {
     type: Number,
@@ -39,14 +43,47 @@ const userScheam = new Schema<Tuser>({
     type: String,
     required: true,
   },
+  hobbies: {
+    type: [String],
+    default: [],
+  },
   isActive: Boolean,
   address: {
     type: addressSchema,
     required: true,
   },
-  orders: {
-    orders: { type: [ordersSchema], default: [] },
-  },
+  orders: [ordersSchema],
 });
 
-export const UserModel = model<Tuser>('Student', userScheam);
+userSchema.pre('save', async function (next) {
+  // eslint-disable-next-line @typescript-eslint/no-this-alias
+  const user = this;
+  // hasing passwrod and save to db
+  if (user.password) {
+    user.password = await bcrypt.hash(
+      user.password,
+      Number(config.bcrypt_salt_rounds),
+    );
+  }
+
+  next();
+});
+
+userSchema.post('save', async function (doc, next) {
+  doc.password = undefined;
+  next();
+});
+export class CustomError extends Error {
+  statusCode: unknown;
+  constructor(message: string | undefined, statusCode: unknown) {
+    super(message);
+    this.statusCode = statusCode;
+  }
+}
+
+userSchema.statics.isUserExists = async function (userId: string) {
+  const existingUser = await UserModel.findOne({ userId });
+  return !!existingUser;
+};
+
+export const UserModel = model<Tuser, userModel>('User', userSchema);
