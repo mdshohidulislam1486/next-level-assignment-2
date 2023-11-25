@@ -7,6 +7,8 @@
 - After opening the folder on vs code simply run the below command on your terminal
 
 \*\* use `npm i` to add all the depedencise
+\*\* to build use `npm run build`
+\*\* to start the app use `npm run start:dev`
 
 << -- Your app is ready to go !! -->>
 
