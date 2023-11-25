@@ -1,6 +1,6 @@
 # next-level-assignment-2
 
-# Instruction for how to use this app on local computer
+# Instruction for how to use this app on a local computer
 
 - First clone the repository to your local computer
 - We assume you have VS code and node installed in your computer
@@ -10,7 +10,7 @@
 
 \*\* npm i -D @types/bcrypt types/cors types/express @typescript-eslint/eslint-plugin @typescript-eslint/parser @typescript-eslint/parser eslint eslint-config-prettier ts-node-dev typescrip
 
-- Your app is ready to go !!
+<< -- Your app is ready to go !! -->>
 
 # Follow the below instruction to get, update, delete and edit data into database
 
@@ -26,6 +26,6 @@
 
 * http://localhost:5000/api/users/:userId/orders'
 
-- To get a user's all order total price use the below get method
+- To get a user's all order total price use the below link with get method
 
 * http://localhost:5000/api/users/:userId/orders/total-price'
