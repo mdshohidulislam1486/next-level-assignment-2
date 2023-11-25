@@ -4,7 +4,7 @@
 
 - First clone the repository to your local computer
 - We assume you have VS code and node installed in your computer
-- Simply run the below two commands on your terminal
+- After opening the folder on vs code simply run the below two commands on your terminal
 
 \*\* npm i bcrypt cors dotenv express mongoose zod
 
