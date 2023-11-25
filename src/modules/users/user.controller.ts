@@ -17,7 +17,10 @@ const createUser = async (req: Request, res: Response) => {
     res.status(500).json({
       success: false,
       message: error.message || 'Failed to create user',
-      data: error.message,
+      error: {
+        code: 404,
+        description: 'Failed to create user',
+      },
     });
   }
 };
@@ -32,8 +35,11 @@ const getAllUser = async (req: Request, res: Response) => {
   } catch (error: any) {
     res.status(500).json({
       success: false,
-      message: error.message || 'No user Found',
-      data: error.message,
+      message: error.message || 'No user found',
+      error: {
+        code: 404,
+        description: 'No user found',
+      },
     });
   }
 };
@@ -107,7 +113,12 @@ const addSingleOrder = async (req: Request, res: Response) => {
   try {
     const { userId } = req.params;
 
-    const { order } = req.body;
+    let order = req.body;
+    order = {
+      productName: order.productName,
+      price: order.price,
+      quantity: order.quantity,
+    };
     await userService.addSingleOrderIntoDB(userId, order);
     res.status(200).json({
       success: true,

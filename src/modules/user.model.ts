@@ -1,5 +1,5 @@
-import mongoose, { Schema, model } from 'mongoose';
-import validator from 'validator';
+import { Schema, model } from 'mongoose';
+
 import { Taddress, Torders, Tuser, userModel } from './users/user.interface';
 import bcrypt from 'bcrypt';
 import config from '../app/config';
@@ -55,10 +55,11 @@ const userSchema = new Schema<Tuser>({
   orders: [ordersSchema],
 });
 
+// for hasing passwrod and save to db
 userSchema.pre('save', async function (next) {
   // eslint-disable-next-line @typescript-eslint/no-this-alias
   const user = this;
-  // hasing passwrod and save to db
+
   if (user.password) {
     user.password = await bcrypt.hash(
       user.password,
@@ -71,6 +72,27 @@ userSchema.pre('save', async function (next) {
 
 userSchema.post('save', async function (doc, next) {
   doc.password = undefined;
+  if (doc.orders && doc.orders.length < 1) {
+    doc.orders = undefined;
+  }
+  next();
+});
+
+userSchema.post('findOne', function (doc, next) {
+  if (doc && doc.orders && doc.orders.length < 1) {
+    doc.orders = undefined;
+  }
+  if (doc) {
+    doc.password = undefined;
+  }
+  next();
+});
+
+userSchema.post('findOneAndUpdate', function (doc, next) {
+  if (doc && doc.orders && doc.orders.length < 1) {
+    doc.orders = undefined;
+  }
+
   next();
 });
 export class CustomError extends Error {
