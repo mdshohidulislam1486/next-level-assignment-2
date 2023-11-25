@@ -4,11 +4,9 @@
 
 - First clone the repository to your local computer
 - We assume you have VS code and node installed in your computer
-- After opening the folder on vs code simply run the below two commands on your terminal
+- After opening the folder on vs code simply run the below command on your terminal
 
-\*\* npm i bcrypt cors dotenv express mongoose zod
-
-\*\* npm i -D @types/bcrypt types/cors types/express @typescript-eslint/eslint-plugin @typescript-eslint/parser @typescript-eslint/parser eslint eslint-config-prettier ts-node-dev typescrip
+\*\* use `npm i` to add all the depedencise
 
 << -- Your app is ready to go !! -->>
 
