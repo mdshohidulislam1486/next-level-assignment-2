@@ -29,3 +29,5 @@
 - To get a user's all order total price use the below link with get method
 
 * http://localhost:5000/api/users/:userId/orders/total-price'
+
+\*\*\* Please add the .env file from eamil
