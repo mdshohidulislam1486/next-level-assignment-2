@@ -4,7 +4,7 @@ import { userService } from './user.service';
 
 const createUser = async (req: Request, res: Response) => {
   try {
-    const { userData } = req.body;
+    const userData = req.body;
 
     const zodParseData = userValidation.parse(userData);
     const result = await userService.createUserIntoDb(zodParseData);
@@ -66,7 +66,7 @@ const getSingleUser = async (req: Request, res: Response) => {
 const updateSingleUser = async (req: Request, res: Response) => {
   try {
     const { userId } = req.params;
-    const { userData } = req.body;
+    const userData = req.body;
     const zodParseData = userValidation.parse(userData);
     const result = await userService.updateSingleUserIntoDB(
       userId,
